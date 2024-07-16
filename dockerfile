@@ -1,12 +1,17 @@
 FROM alpine:latest
 
 
-RUN apk add --no-cache lighttpd &&\
+RUN apk add --no-cache lighttpd git &&\
  adduser -DH www &&\
- mkdir -p /var/www/servers/qrmenu/
+ mkdir -p /var/www/servers/
 
 COPY ./lighttpd.conf /etc/lighttpd/
-COPY ./ /var/www/servers/qrmenu/
+
+COPY ./entrypoint.sh /var/www/servers/
+
+CMD [ "chmod", "+x", "/var/www/servers/entrypoint.sh"]
+
+WORKDIR /var/www/servers/
 
 VOLUME /etc/lighttpd/
 VOLUME /var/www/
@@ -22,5 +27,4 @@ HEALTHCHECK --interval=1m --timeout=1s \
   CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:80/ || exit 1
 
 
-
-ENTRYPOINT [ "/usr/sbin/lighttpd", "-D","-f", "/etc/lighttpd/lighttpd.conf" ]
+ENTRYPOINT [ "sh","entrypoint.sh" ]
