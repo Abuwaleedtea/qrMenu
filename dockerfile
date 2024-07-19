@@ -13,8 +13,8 @@ CMD [ "chmod", "+x", "/var/www/servers/entrypoint.sh"]
 
 WORKDIR /var/www/servers/
 
-VOLUME /etc/lighttpd/
-VOLUME /var/www/
+# VOLUME /etc/lighttpd/
+# VOLUME /var/www/
 
 EXPOSE 80
 
